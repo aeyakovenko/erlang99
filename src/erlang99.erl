@@ -5,6 +5,7 @@
         ,penultimate/1
         ,nth/2
         ,reverse/1
+        ,palindrome/1
         ]).
 
 last([H|[]]) -> H;
@@ -36,4 +37,14 @@ reverse_test_() ->
   ,?_assertEqual(lists:reverse(lists:nth(2,Ls)), reverse(nth(2,Ls)))
   ,?_assertEqual(lists:reverse(lists:nth(3,Ls)), reverse(nth(3,Ls)))
   ,?_assertEqual(lists:reverse(lists:nth(4,Ls)), reverse(nth(4,Ls)))
+  ].
+
+palindrome(Ls) -> reverse(Ls) =:= Ls.
+palindrome_test_() -> 
+  [?_assertEqual(true, palindrome([]))
+  ,?_assertEqual(true, palindrome([1]))
+  ,?_assertEqual(false, palindrome([1,2]))
+  ,?_assertEqual(true, palindrome([1,2,1]))
+  ,?_assertEqual(false, palindrome([1,2,1,2]))
+  ,?_assertEqual(true, palindrome([1,2,2,1]))
   ].
