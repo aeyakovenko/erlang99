@@ -88,3 +88,19 @@ compress_test_() ->
   ,?_assertEqual([1,2], compress([1,1,1,2]))
   ,?_assertEqual([1,2], compress([1,1,1,2,2]))
   ].
+
+group([]) -> [];
+group([H|T]) -> 
+  P=fun(E) -> E =:= H end,
+  S=lists:takewhile(P,[H|T]),
+  E=lists:dropwhile(P,T),
+  [S] ++ group(E).
+
+group_test_() ->
+  [?_assertEqual([], group([]))
+  ,?_assertEqual([[1]], group([1]))
+  ,?_assertEqual([[1],[2]], group([1,2]))
+  ,?_assertEqual([[1,1],[2]], group([1,1,2]))
+  ,?_assertEqual([[1],[2,2]], group([1,2,2]))
+  ,?_assertEqual([[1],[2,2],[3]], group([1,2,2,3]))
+  ].
