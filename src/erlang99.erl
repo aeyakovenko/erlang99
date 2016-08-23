@@ -6,6 +6,8 @@
         ,nth/2
         ,reverse/1
         ,palindrome/1
+        ,nelems/1
+        ,flatten/1
         ]).
 
 last([H|[]]) -> H;
@@ -39,7 +41,17 @@ reverse_test_() ->
   ,?_assertEqual(lists:reverse(lists:nth(4,Ls)), reverse(nth(4,Ls)))
   ].
 
+nelems(Ls) -> lists:foldr(fun(_,Z) -> (Z + 1) end, 0, Ls).
+
+nelems_test_() -> 
+  [?_assertEqual(0, nelems([]))
+  ,?_assertEqual(1, nelems([1]))
+  ,?_assertEqual(2, nelems([1,2]))
+  ,?_assertEqual(3, nelems([1,2,3]))
+  ].
+
 palindrome(Ls) -> reverse(Ls) =:= Ls.
+
 palindrome_test_() -> 
   [?_assertEqual(true, palindrome([]))
   ,?_assertEqual(true, palindrome([1]))
@@ -48,3 +60,18 @@ palindrome_test_() ->
   ,?_assertEqual(false, palindrome([1,2,1,2]))
   ,?_assertEqual(true, palindrome([1,2,2,1]))
   ].
+
+flatten([]) -> [];
+flatten([H|T]) -> flatten(H) ++ flatten(T);
+flatten(Ls) -> [Ls].
+
+flatten_test_() -> 
+  [?_assertEqual([], flatten([]))
+  ,?_assertEqual([], flatten([[]]))
+  ,?_assertEqual([], flatten([[],[]]))
+  ,?_assertEqual([], flatten([[[]],[]]))
+  ,?_assertEqual([], flatten([[],[[]]]))
+  ,?_assertEqual([1], flatten([[],[[1]]]))
+  ,?_assertEqual([1,2], flatten([[1],[[2]]]))
+  ].
+
