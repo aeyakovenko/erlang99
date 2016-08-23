@@ -8,6 +8,7 @@
         ,palindrome/1
         ,nelems/1
         ,flatten/1
+        ,compress/1
         ]).
 
 last([H|[]]) -> H;
@@ -75,3 +76,15 @@ flatten_test_() ->
   ,?_assertEqual([1,2], flatten([[1],[[2]]]))
   ].
 
+compress([]) -> [];
+compress([H,H|T]) -> compress([H|T]);
+compress([H|T]) -> [H|compress(T)].
+
+compress_test_() ->
+  [?_assertEqual([], compress([]))
+  ,?_assertEqual([1], compress([1]))
+  ,?_assertEqual([1], compress([1,1]))
+  ,?_assertEqual([1], compress([1,1,1]))
+  ,?_assertEqual([1,2], compress([1,1,1,2]))
+  ,?_assertEqual([1,2], compress([1,1,1,2,2]))
+  ].
